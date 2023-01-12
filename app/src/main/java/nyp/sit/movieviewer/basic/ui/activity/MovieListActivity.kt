@@ -1,6 +1,8 @@
 package nyp.sit.movieviewer.basic.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.AdapterView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -22,6 +24,12 @@ class MovieListActivity : AppCompatActivity() {
         adapter = MovieListAdapter(this, R.layout.list_item_movie)
         binding.apply {
             movieList.adapter = adapter
+            movieList.setOnItemClickListener { adapterView, _, i, _ ->
+                val movie = adapterView.getItemAtPosition(i) as Movie
+                val intent = Intent(this@MovieListActivity, MovieDetailActivity::class.java)
+                intent.putExtra("movie", movie)
+                startActivity(intent)
+            }
         }
 
         val moviesObserver = Observer<ArrayList<Movie>> { movies ->
