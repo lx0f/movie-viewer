@@ -23,19 +23,18 @@ class UserRepository : IUserRepository {
         emit(users)
     }
 
+    override suspend fun getUserByAdminNumber(adminNumber: String): User? {
+        delay(1000)
+        return users.firstOrNull { u -> u.admin_number == adminNumber }
+    }
+
+    override suspend fun getUserByLoginName(loginName: String): User? {
+        delay(1000)
+        return users.firstOrNull { u -> u.login_name == loginName }
+    }
+
     override suspend fun addUser(user: User) {
         // TODO: Verify password strength
-        val loginNameExists = users.any { u -> u.login_name == user.login_name }
-        val adminNumberExists = users.any { u -> u.admin_number == user.admin_number }
-
-        if (loginNameExists) {
-            throw LoginNameExists()
-        }
-
-        if (adminNumberExists) {
-            throw AdminNumberExists()
-        }
-
         delay(1000)
         users.add(user)
     }

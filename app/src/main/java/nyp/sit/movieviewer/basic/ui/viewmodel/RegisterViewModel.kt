@@ -7,6 +7,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.basic.MovieApplication
+import nyp.sit.movieviewer.basic.UserManager
 import nyp.sit.movieviewer.basic.data.IUserRepository
 import nyp.sit.movieviewer.basic.domain.AdminNumberExists
 import nyp.sit.movieviewer.basic.domain.LoginNameExists
@@ -14,13 +15,14 @@ import nyp.sit.movieviewer.basic.domain.RegisterStatus
 import nyp.sit.movieviewer.basic.entity.User
 
 class RegisterViewModel(
-    private val repository: IUserRepository
+    private val userManager: UserManager
 ) : ViewModel() {
 
     fun submit(user: User): LiveData<RegisterStatus> = liveData(Dispatchers.IO) {
         emit(RegisterStatus.LOADING)
         try {
-            repository.addUser(user)
+            userManager.register(user)
+            emit(RegisterStatus.SUCCESS)
         } catch (err: Exception) {
             emit(RegisterStatus.FAIL)
             when (err) {
@@ -42,7 +44,7 @@ class RegisterViewModel(
                 val application =
                     checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
                 return RegisterViewModel(
-                    (application as MovieApplication).userRepository
+                    (application as MovieApplication).userManager
                 ) as T
             }
         }

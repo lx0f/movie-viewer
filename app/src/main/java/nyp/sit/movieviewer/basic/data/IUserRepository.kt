@@ -5,5 +5,7 @@ import nyp.sit.movieviewer.basic.entity.User
 
 interface IUserRepository {
     fun getAllUsers(): Flow<ArrayList<User>>
+    suspend fun getUserByAdminNumber(adminNumber: String): User?
+    suspend fun getUserByLoginName(loginName: String): User?
     suspend fun addUser(user: User)
 }

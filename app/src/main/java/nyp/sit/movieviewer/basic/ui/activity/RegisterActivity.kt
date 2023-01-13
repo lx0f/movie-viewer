@@ -1,6 +1,8 @@
 package nyp.sit.movieviewer.basic.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -13,6 +15,7 @@ import nyp.sit.movieviewer.basic.ui.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
 
+    private val TAG: String? = this::class.simpleName
     lateinit var binding: ActivityRegisterBinding
     private val viewModel: RegisterViewModel by viewModels { RegisterViewModel.Factory }
 
@@ -28,9 +31,13 @@ class RegisterActivity : AppCompatActivity() {
     private fun submit() {
         val statusObserver = Observer<RegisterStatus> { status: RegisterStatus? ->
             when (status) {
-                RegisterStatus.FAIL -> println("FAIL")
-                RegisterStatus.LOADING, null -> println("LOADING...")
-                RegisterStatus.SUCCESS -> println("SUCCESS")
+                RegisterStatus.FAIL -> Log.d(TAG, "FAIL")
+                RegisterStatus.LOADING, null -> Log.d(TAG, "LOADING...")
+                RegisterStatus.SUCCESS -> {
+                    Log.d(TAG, "SUCCESS")
+                    val intent = Intent(this, VerifyCodeActivity::class.java)
+                    startActivity(intent)
+                }
                 RegisterStatus.LOGIN_NAME_EXITS -> {
                     binding.loginNameInput.error = "Enter a different login name."
                 }
