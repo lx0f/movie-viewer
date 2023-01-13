@@ -21,7 +21,9 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         binding.registerButton.setOnClickListener {
-            submit()
+            if (verifyFieldsNotEmpty()) {
+                submit()
+            }
         }
         setContentView(binding.root)
     }
@@ -57,5 +59,32 @@ class RegisterActivity : AppCompatActivity() {
         }
         val status = viewModel.submit(newUser)
         status.observe(this, statusObserver)
+    }
+
+    private fun verifyFieldsNotEmpty(): Boolean {
+        var hasError = false
+        binding.apply {
+            if (loginNameInput.text.isEmpty()) {
+                loginNameInput.error = "Please enter your login name"
+                hasError = true
+            }
+            if (passwordInput.text.isEmpty()) {
+                passwordInput.error = "Please enter your password"
+                hasError = true
+            }
+            if (adminNumberInput.text.isEmpty()) {
+                adminNumberInput.error = "Please enter your admin number"
+                hasError = true
+            }
+            if (emailInput.text.isEmpty()) {
+                emailInput.error = "Please enter your email address"
+                hasError = true
+            }
+            if (pemGroupInput.text.isEmpty()) {
+                pemGroupInput.error = "Please enter your pem group"
+                hasError = true
+            }
+        }
+        return !hasError
     }
 }
