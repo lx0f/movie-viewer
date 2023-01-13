@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.UserManager
 import nyp.sit.movieviewer.basic.domain.exception.InvalidCredentials
-import nyp.sit.movieviewer.basic.domain.LoginStatus
+import nyp.sit.movieviewer.basic.domain.status.LoginStatus
 
 class LoginViewModel(private val userManager: UserManager) : ViewModel() {
 

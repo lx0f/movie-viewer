@@ -10,7 +10,7 @@ import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.UserManager
 import nyp.sit.movieviewer.basic.domain.exception.AdminNumberExists
 import nyp.sit.movieviewer.basic.domain.exception.LoginNameExists
-import nyp.sit.movieviewer.basic.domain.RegisterStatus
+import nyp.sit.movieviewer.basic.domain.status.RegisterStatus
 import nyp.sit.movieviewer.basic.entity.User
 
 class RegisterViewModel(

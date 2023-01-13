@@ -8,7 +8,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewmodel.CreationExtras
 import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.data.IMovieRepository
-import nyp.sit.movieviewer.basic.domain.AddFavouriteStatus
+import nyp.sit.movieviewer.basic.domain.status.AddFavouriteStatus
 import nyp.sit.movieviewer.basic.domain.exception.FavouriteMovieExists
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User

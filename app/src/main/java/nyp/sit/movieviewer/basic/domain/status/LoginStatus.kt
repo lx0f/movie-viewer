@@ -1,4 +1,4 @@
-package nyp.sit.movieviewer.basic.domain
+package nyp.sit.movieviewer.basic.domain.status
 
 enum class LoginStatus {
     INVALID,

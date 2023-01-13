@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import nyp.sit.movieviewer.basic.databinding.ActivityRegisterBinding
-import nyp.sit.movieviewer.basic.domain.RegisterStatus
+import nyp.sit.movieviewer.basic.domain.status.RegisterStatus
 import nyp.sit.movieviewer.basic.entity.User
 import nyp.sit.movieviewer.basic.ui.viewmodel.RegisterViewModel
 

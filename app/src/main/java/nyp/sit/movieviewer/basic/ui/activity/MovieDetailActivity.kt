@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nyp.sit.movieviewer.basic.R
 import nyp.sit.movieviewer.basic.databinding.ActivityMovieDetailBinding
-import nyp.sit.movieviewer.basic.domain.AddFavouriteStatus
+import nyp.sit.movieviewer.basic.domain.status.AddFavouriteStatus
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.ui.viewmodel.MovieDetailViewModel
 

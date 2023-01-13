@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import nyp.sit.movieviewer.basic.databinding.ActivityLoginBinding
-import nyp.sit.movieviewer.basic.domain.LoginStatus
+import nyp.sit.movieviewer.basic.domain.status.LoginStatus
 import nyp.sit.movieviewer.basic.ui.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
