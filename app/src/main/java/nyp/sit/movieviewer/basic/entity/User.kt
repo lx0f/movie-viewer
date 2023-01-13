@@ -5,5 +5,6 @@ data class User(
     var password: String? = null,
     var email: String? = null,
     var admin_number: String? = null,
-    var pem_group: String? = null
+    var pem_group: String? = null,
+    var verified: Boolean = false
 )

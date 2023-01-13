@@ -26,7 +26,7 @@ class VerifyCodeActivity : AppCompatActivity() {
                 // TODO: Insert loading animation
                 val result = verifyJob.await()
                 if (result) {
-                    val intent = Intent(this@VerifyCodeActivity, MovieListActivity::class.java)
+                    val intent = Intent(this@VerifyCodeActivity, LoginActivity::class.java)
                     startActivity(intent)
                 } else {
                     runOnUiThread {

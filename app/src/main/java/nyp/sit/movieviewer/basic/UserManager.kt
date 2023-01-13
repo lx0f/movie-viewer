@@ -3,6 +3,7 @@ package nyp.sit.movieviewer.basic
 import kotlinx.coroutines.*
 import nyp.sit.movieviewer.basic.data.IUserRepository
 import nyp.sit.movieviewer.basic.domain.AdminNumberExists
+import nyp.sit.movieviewer.basic.domain.InvalidCredentials
 import nyp.sit.movieviewer.basic.domain.LoginNameExists
 import nyp.sit.movieviewer.basic.entity.User
 
@@ -21,6 +22,7 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
         val result = userCodeHashMap[user.admin_number!!] == code
         return if (result) {
             delay(1000)
+            user.verified = true
             result
         } else {
             result
@@ -48,6 +50,19 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
                 setUser(user)
 
                 awaitAll(addUserJob, sendCodeJob)
+            }
+        }
+    }
+
+    suspend fun login(loginName: String, password: String) {
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                val user = repository.getUserByLoginName(loginName)
+                if (user != null && user.password == password) {
+                    setUser(user)
+                } else {
+                    throw InvalidCredentials()
+                }
             }
         }
     }
