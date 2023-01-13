@@ -8,7 +8,6 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.UserManager
-import nyp.sit.movieviewer.basic.data.IUserRepository
 import nyp.sit.movieviewer.basic.domain.AdminNumberExists
 import nyp.sit.movieviewer.basic.domain.LoginNameExists
 import nyp.sit.movieviewer.basic.domain.RegisterStatus

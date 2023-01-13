@@ -9,7 +9,7 @@ import nyp.sit.movieviewer.basic.entity.User
 
 class MovieApplication : Application() {
 
-    lateinit var userRepository: IUserRepository
+    private lateinit var userRepository: IUserRepository
     lateinit var movieRepository: IMovieRepository
     lateinit var userManager: UserManager
     var user: User? = null

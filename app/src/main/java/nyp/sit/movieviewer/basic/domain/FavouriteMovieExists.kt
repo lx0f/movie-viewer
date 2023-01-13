@@ -1,3 +1,3 @@
 package nyp.sit.movieviewer.basic.domain
 
-class LoginNameExists : Exception()
+class FavouriteMovieExists : Exception()

@@ -3,8 +3,6 @@ package nyp.sit.movieviewer.basic.data
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import nyp.sit.movieviewer.basic.domain.AdminNumberExists
-import nyp.sit.movieviewer.basic.domain.LoginNameExists
 import nyp.sit.movieviewer.basic.entity.User
 
 class UserRepository : IUserRepository {

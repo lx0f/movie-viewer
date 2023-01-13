@@ -1,6 +1,5 @@
 package nyp.sit.movieviewer.basic.data
 
-import kotlinx.coroutines.delay
 import nyp.sit.movieviewer.basic.entity.Movie
 
 class MovieFixture {
@@ -11,9 +10,8 @@ class MovieFixture {
             populateSimpleMovieItem()
         }
 
-        suspend fun getAllMovies(): ArrayList<Movie> {
+        fun getAllMovies(): ArrayList<Movie> {
             // TODO: delete this
-            delay(1500)
             return moviesArrayList
         }
 

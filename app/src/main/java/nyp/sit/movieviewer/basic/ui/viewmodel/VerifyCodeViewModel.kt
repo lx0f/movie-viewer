@@ -1,11 +1,9 @@
 package nyp.sit.movieviewer.basic.ui.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.UserManager
 import nyp.sit.movieviewer.basic.entity.User

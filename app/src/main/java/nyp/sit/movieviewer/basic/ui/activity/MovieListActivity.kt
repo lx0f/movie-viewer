@@ -2,7 +2,9 @@ package nyp.sit.movieviewer.basic.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.AdapterView
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -14,8 +16,9 @@ import nyp.sit.movieviewer.basic.ui.viewmodel.MovieListViewModel
 
 class MovieListActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMovieListBinding
-    lateinit var adapter: MovieListAdapter
+    private val TAG: String? = this::class.simpleName
+    private lateinit var binding: ActivityMovieListBinding
+    private lateinit var adapter: MovieListAdapter
     private val viewModel: MovieListViewModel by viewModels { MovieListViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +35,7 @@ class MovieListActivity : AppCompatActivity() {
             }
         }
 
-        val moviesObserver = Observer<ArrayList<Movie>> { movies ->
+        val moviesObserver = Observer<List<Movie>> { movies ->
             adapter.clear()
             adapter.addAll(movies)
         }
@@ -40,6 +43,22 @@ class MovieListActivity : AppCompatActivity() {
         viewModel.movies.observe(this, moviesObserver)
 
         setContentView(binding.root)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.movie_list_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.title) {
+            "View Favourites" -> {
+                val intent = Intent(this, FavouriteMovieListActivity::class.java)
+                startActivity(intent)
+            }
+            "Sign Out" -> Log.d(TAG, "SIGN OUT")
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

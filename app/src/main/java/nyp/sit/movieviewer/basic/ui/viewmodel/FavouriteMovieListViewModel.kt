@@ -10,28 +10,29 @@ import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.data.IMovieRepository
 import nyp.sit.movieviewer.basic.entity.Movie
+import nyp.sit.movieviewer.basic.entity.User
 
-
-class MovieListViewModel(
-    repository: IMovieRepository
+class FavouriteMovieListViewModel(
+    repository: IMovieRepository,
+    user: User
 ) : ViewModel() {
 
-    val movies: LiveData<List<Movie>> = repository.getAllMovies().asLiveData(Dispatchers.IO)
+    val movies: LiveData<List<Movie>> = repository.getAllFavouriteMoviesAsMovie(user)
+        .asLiveData(Dispatchers.IO)
 
     companion object {
-        val Factory = MovieListViewModelFactory()
+        val Factory = FavouriteMovieListViewModelFactory()
 
-        class MovieListViewModelFactory : ViewModelProvider.Factory {
+        class FavouriteMovieListViewModelFactory : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: CreationExtras
-            ): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
-                return MovieListViewModel(
-                    (application as MovieApplication).movieRepository
+                return FavouriteMovieListViewModel(
+                    (application as MovieApplication).movieRepository,
+                    application.user!!
                 ) as T
             }
         }
     }
+
 }

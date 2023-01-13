@@ -7,8 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import nyp.sit.movieviewer.basic.databinding.ActivityRegisterBinding
-import nyp.sit.movieviewer.basic.domain.AdminNumberExists
-import nyp.sit.movieviewer.basic.domain.LoginNameExists
 import nyp.sit.movieviewer.basic.domain.RegisterStatus
 import nyp.sit.movieviewer.basic.entity.User
 import nyp.sit.movieviewer.basic.ui.viewmodel.RegisterViewModel
@@ -16,7 +14,7 @@ import nyp.sit.movieviewer.basic.ui.viewmodel.RegisterViewModel
 class RegisterActivity : AppCompatActivity() {
 
     private val TAG: String? = this::class.simpleName
-    lateinit var binding: ActivityRegisterBinding
+    private lateinit var binding: ActivityRegisterBinding
     private val viewModel: RegisterViewModel by viewModels { RegisterViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {

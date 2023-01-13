@@ -12,7 +12,7 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
     private val userCodeHashMap = HashMap<String, Int>()
     var user: User? = null
 
-    suspend fun sendCode(user: User) {
+    private suspend fun sendCode(user: User) {
         val code = 1234
         delay(1000)
         userCodeHashMap[user.admin_number!!] = code
