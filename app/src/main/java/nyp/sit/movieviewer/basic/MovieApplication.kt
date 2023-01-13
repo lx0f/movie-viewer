@@ -1,10 +1,9 @@
 package nyp.sit.movieviewer.basic
 
 import android.app.Application
-import nyp.sit.movieviewer.basic.data.IMovieRepository
-import nyp.sit.movieviewer.basic.data.IUserRepository
-import nyp.sit.movieviewer.basic.data.MovieRepository
-import nyp.sit.movieviewer.basic.data.UserRepository
+import androidx.room.Room
+import nyp.sit.movieviewer.basic.data.*
+import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
 
 class MovieApplication : Application() {
@@ -12,11 +11,17 @@ class MovieApplication : Application() {
     private lateinit var userRepository: IUserRepository
     lateinit var movieRepository: IMovieRepository
     lateinit var userManager: UserManager
+    lateinit var database: MovieDatabase
     var user: User? = null
 
     override fun onCreate() {
         super.onCreate()
-        movieRepository = MovieRepository()
+        database = Room.databaseBuilder(
+            this.applicationContext,
+            MovieDatabase::class.java,
+            "moviedatabase"
+        ).build()
+        movieRepository = MovieRepository(database.favouriteMovieDao())
         userRepository = UserRepository()
         userManager = UserManager(userRepository) { u: User? -> user = u }
     }
