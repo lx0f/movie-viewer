@@ -2,9 +2,9 @@ package nyp.sit.movieviewer.basic
 
 import kotlinx.coroutines.*
 import nyp.sit.movieviewer.basic.data.IUserRepository
-import nyp.sit.movieviewer.basic.domain.AdminNumberExists
-import nyp.sit.movieviewer.basic.domain.InvalidCredentials
-import nyp.sit.movieviewer.basic.domain.LoginNameExists
+import nyp.sit.movieviewer.basic.domain.exception.AdminNumberExists
+import nyp.sit.movieviewer.basic.domain.exception.InvalidCredentials
+import nyp.sit.movieviewer.basic.domain.exception.LoginNameExists
 import nyp.sit.movieviewer.basic.entity.User
 
 class UserManager(private val repository: IUserRepository, private val setUser: (User?) -> Unit) {

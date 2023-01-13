@@ -3,7 +3,7 @@ package nyp.sit.movieviewer.basic.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import nyp.sit.movieviewer.basic.domain.FavouriteMovieExists
+import nyp.sit.movieviewer.basic.domain.exception.FavouriteMovieExists
 import nyp.sit.movieviewer.basic.entity.FavouriteMovie
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
