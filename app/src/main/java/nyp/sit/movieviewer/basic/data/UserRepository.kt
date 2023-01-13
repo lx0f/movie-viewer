@@ -9,11 +9,11 @@ class UserRepository : IUserRepository {
     private val users: ArrayList<User> = arrayListOf(User(
         // TODO: Delete this
         // Its for testing purposes
-        "login",
-        "password",
-        "email",
-        "admin",
-        "pem"
+        "testuser",
+        "testuser",
+        "testuser@example.com",
+        "testuser",
+        "testuser"
     ))
 
     override fun getAllUsers(): Flow<ArrayList<User>> = flow {
