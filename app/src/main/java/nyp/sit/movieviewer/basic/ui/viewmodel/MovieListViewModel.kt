@@ -8,15 +8,21 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.basic.MovieApplication
+import nyp.sit.movieviewer.basic.UserManager
 import nyp.sit.movieviewer.basic.data.IMovieRepository
 import nyp.sit.movieviewer.basic.entity.Movie
 
 
 class MovieListViewModel(
-    repository: IMovieRepository
+    repository: IMovieRepository,
+    private val userManager: UserManager
 ) : ViewModel() {
 
     val movies: LiveData<List<Movie>> = repository.getAllMovies().asLiveData(Dispatchers.IO)
+
+    suspend fun signOut() {
+        userManager.signOut()
+    }
 
     companion object {
         val Factory = MovieListViewModelFactory()
@@ -29,7 +35,8 @@ class MovieListViewModel(
             ): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
                 return MovieListViewModel(
-                    (application as MovieApplication).movieRepository
+                    (application as MovieApplication).movieRepository,
+                    application.userManager
                 ) as T
             }
         }

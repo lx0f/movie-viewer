@@ -18,6 +18,6 @@ class MovieApplication : Application() {
         super.onCreate()
         movieRepository = MovieRepository()
         userRepository = UserRepository()
-        userManager = UserManager(userRepository) { u -> user = u }
+        userManager = UserManager(userRepository) { u: User? -> user = u }
     }
 }

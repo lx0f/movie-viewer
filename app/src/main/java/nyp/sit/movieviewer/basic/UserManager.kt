@@ -7,7 +7,7 @@ import nyp.sit.movieviewer.basic.domain.InvalidCredentials
 import nyp.sit.movieviewer.basic.domain.LoginNameExists
 import nyp.sit.movieviewer.basic.entity.User
 
-class UserManager(private val repository: IUserRepository, private val setUser: (User) -> Unit) {
+class UserManager(private val repository: IUserRepository, private val setUser: (User?) -> Unit) {
 
     private val userCodeHashMap = HashMap<String, Int>()
     var user: User? = null
@@ -63,6 +63,15 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
                 } else {
                     throw InvalidCredentials()
                 }
+            }
+        }
+    }
+
+    suspend fun signOut() {
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                delay(500)
+                setUser(null)
             }
         }
     }
