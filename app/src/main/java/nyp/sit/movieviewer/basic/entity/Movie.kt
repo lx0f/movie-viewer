@@ -6,6 +6,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
+import nyp.sit.movieviewer.basic.util.Converter
 
 @Serializable
 @Entity(tableName = "movie")
@@ -45,7 +46,7 @@ data class Movie(
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         parcel.readString(),
         parcel.readString(),
-        TODO("genre_ids"),
+        Converter.fromString(parcel.readString()),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -63,6 +64,7 @@ data class Movie(
         parcel.writeValue(adult)
         parcel.writeString(overview)
         parcel.writeString(release_date)
+        parcel.writeString(Converter.fromList(genre_ids))
         parcel.writeString(original_title)
         parcel.writeString(original_language)
         parcel.writeString(title)

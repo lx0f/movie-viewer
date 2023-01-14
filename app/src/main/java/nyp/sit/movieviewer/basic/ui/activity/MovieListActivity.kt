@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +31,8 @@ class MovieListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieListBinding.inflate(layoutInflater)
-        adapter = MovieAdapter(object : DiffUtil.ItemCallback<Movie>() {
+        adapter = MovieAdapter(
+            object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -38,8 +40,16 @@ class MovieListActivity : AppCompatActivity() {
             override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
                 return oldItem == newItem
             }
+        },
+            object : MovieAdapter.OnItemClickListener {
+                override fun onItemClick(movie: Movie) {
+                    val intent = Intent(this@MovieListActivity, MovieDetailActivity::class.java)
+                    intent.putExtra("movie", movie)
+                    startActivity(intent)
+                }
+            }
+        )
 
-        })
 
         binding.movieList.adapter = adapter
 
