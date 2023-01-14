@@ -20,5 +20,6 @@ interface IMovieRepository {
     fun getAllFavouriteMovies(user: User): Flow<List<FavouriteMovie>>
     @Suppress("UNCHECKED_CAST")
     fun getAllFavouriteMoviesAsMovie(user: User): Flow<List<Movie>>
+    fun getFavouriteMoviesWithDynamo(user: User): Flow<List<Movie>>
     fun getMovieStream(queryType: QueryType): LiveData<PagingData<Movie>>
 }

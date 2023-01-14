@@ -17,7 +17,7 @@ class FavouriteMovieListViewModel(
     user: User
 ) : ViewModel() {
 
-    val movies: LiveData<List<Movie>> = repository.getAllFavouriteMoviesAsMovie(user)
+    val movies: LiveData<List<Movie>> = repository.getFavouriteMoviesWithDynamo(user)
         .asLiveData(Dispatchers.IO)
 
     companion object {

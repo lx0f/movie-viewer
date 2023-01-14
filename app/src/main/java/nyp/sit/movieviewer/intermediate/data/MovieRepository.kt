@@ -87,6 +87,11 @@ class MovieRepository(
         return favouriteMoviesAsMovie as Flow<List<Movie>>
     }
 
+    override fun getFavouriteMoviesWithDynamo(user: User): Flow<List<Movie>> = flow {
+        val userData = ddbMapper?.load(UserData::class.java, user.login_name)
+        emit(userData?.favouriteMovies ?: listOf())
+    }
+
     override fun getMovieStream(queryType: QueryType): LiveData<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
@@ -116,6 +121,8 @@ class MovieRepository(
             }
         }
     }
+
+
 
     companion object {
         val TAG: String? = MovieRepository::class.simpleName
