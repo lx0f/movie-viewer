@@ -1,14 +1,17 @@
 package nyp.sit.movieviewer.intermediate
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
 import androidx.room.Room
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.UserState.*
 import com.amazonaws.mobile.client.UserStateDetails
 import com.amazonaws.mobile.config.AWSConfiguration
 import nyp.sit.movieviewer.intermediate.data.*
 import nyp.sit.movieviewer.intermediate.entity.User
+import nyp.sit.movieviewer.intermediate.ui.activity.MovieListActivity
 import nyp.sit.movieviewer.intermediate.util.TheMovieDbUrlHelper
 import java.lang.Exception
 
@@ -44,6 +47,22 @@ class MovieApplication : Application() {
             object : Callback<UserStateDetails> {
                 override fun onResult(result: UserStateDetails?) {
                     Log.d(TAG, result?.userState?.name ?: "AWSMobileClient Instantiation: Fail")
+                    when (result?.userState) {
+                        GUEST -> {}
+                        // When signed in redirect to MovieListActivity
+                        SIGNED_IN -> {
+                            val intent = Intent(
+                                this@MovieApplication.applicationContext,
+                                MovieListActivity::class.java
+                            )
+                            startActivity(intent)
+                        }
+                        SIGNED_OUT -> {}
+                        SIGNED_OUT_FEDERATED_TOKENS_INVALID -> {}
+                        SIGNED_OUT_USER_POOLS_TOKENS_INVALID -> {}
+                        UNKNOWN -> {}
+                        null -> {}
+                    }
                 }
 
                 override fun onError(e: Exception?) {
