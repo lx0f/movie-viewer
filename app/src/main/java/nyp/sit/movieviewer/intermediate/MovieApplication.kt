@@ -10,6 +10,9 @@ import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserState.*
 import com.amazonaws.mobile.client.UserStateDetails
 import com.amazonaws.mobile.config.AWSConfiguration
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper
+import com.amazonaws.regions.Region
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import nyp.sit.movieviewer.intermediate.data.*
 import nyp.sit.movieviewer.intermediate.entity.User
 import nyp.sit.movieviewer.intermediate.ui.activity.MovieListActivity
@@ -22,6 +25,7 @@ class MovieApplication : Application() {
     lateinit var movieRepository: IMovieRepository
     lateinit var userManager: UserManager
     lateinit var database: MovieDatabase
+    lateinit var ddbMapper: DynamoDBMapper
     var user: User? = null
 
     override fun onCreate() {
@@ -34,11 +38,6 @@ class MovieApplication : Application() {
         )
             .fallbackToDestructiveMigration()
             .build()
-        movieRepository = MovieRepository(
-            database.movieDao(),
-            database.favouriteMovieDao(),
-            MovieWebDataSource()
-        )
         userRepository = UserRepository()
 
         // Instantiate AWSMobileClient
@@ -66,6 +65,12 @@ class MovieApplication : Application() {
                         UNKNOWN -> {}
                         null -> {}
                     }
+                    val client = AmazonDynamoDBClient(
+                        AWSMobileClient.getInstance().credentials
+                    )
+                    client.setRegion(Region.getRegion("ap-southeast-1"))
+                    ddbMapper = DynamoDBMapper(client)
+                    movieRepository.ddbMapper = ddbMapper
                 }
 
                 override fun onError(e: Exception?) {
@@ -74,6 +79,11 @@ class MovieApplication : Application() {
                         throw e
                 }
             })
+        movieRepository = MovieRepository(
+            database.movieDao(),
+            database.favouriteMovieDao(),
+            MovieWebDataSource(),
+        )
     }
 
     companion object {

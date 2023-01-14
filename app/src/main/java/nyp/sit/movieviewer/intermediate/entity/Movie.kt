@@ -5,10 +5,12 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBDocument
 import kotlinx.serialization.Serializable
 import nyp.sit.movieviewer.intermediate.util.Converter
 
 @Serializable
+@DynamoDBDocument
 @Entity(tableName = "movie")
 data class Movie(
     @PrimaryKey

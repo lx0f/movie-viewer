@@ -28,7 +28,7 @@ class MovieDetailViewModel(private val repository: IMovieRepository, private val
     fun addAsFavourite(movie: Movie): LiveData<AddFavouriteStatus> = liveData {
         emit(AddFavouriteStatus.LOADING)
         try {
-            repository.addFavouriteMovie(user, movie)
+            repository.addFavouriteMovieWithDynamo(user, movie)
             emit(AddFavouriteStatus.SUCCESS)
         } catch (err: FavouriteMovieExists) {
             emit(AddFavouriteStatus.FAVOURITE_MOVIE_EXISTS)

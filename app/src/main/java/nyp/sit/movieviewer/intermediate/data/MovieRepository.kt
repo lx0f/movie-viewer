@@ -1,27 +1,35 @@
 package nyp.sit.movieviewer.intermediate.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import nyp.sit.movieviewer.intermediate.domain.QueryType
 import nyp.sit.movieviewer.intermediate.domain.exception.FavouriteMovieExists
 import nyp.sit.movieviewer.intermediate.entity.FavouriteMovie
 import nyp.sit.movieviewer.intermediate.entity.Movie
 import nyp.sit.movieviewer.intermediate.entity.User
+import nyp.sit.movieviewer.intermediate.entity.UserData
 import nyp.sit.movieviewer.intermediate.ui.MoviePagingSource
 import nyp.sit.movieviewer.intermediate.ui.viewmodel.MovieListViewModel
 
 class MovieRepository(
     private val movieDao: MovieDao,
     private val favouriteMovieDao: FavouriteMovieDao,
-    private val webDataSource: MovieWebDataSource
+    private val webDataSource: MovieWebDataSource,
 ) : IMovieRepository {
     private val movies = arrayListOf<Movie>()
+    override var ddbMapper: DynamoDBMapper? = null
 
     // TODO: Change this to real database logic
     // This is meant to be temporary
@@ -87,6 +95,30 @@ class MovieRepository(
             ),
             pagingSourceFactory = { MoviePagingSource(webDataSource, queryType) }
         ).liveData
+    }
+
+    override suspend fun addFavouriteMovieWithDynamo(user: User, movie: Movie) {
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                val id = user.login_name
+                try {
+                    var userData = ddbMapper?.load(UserData::class.java, id)
+                    if (userData == null) {
+                        userData = UserData(id!!, arrayListOf(movie))
+                    } else {
+                        userData.favouriteMovies.add(movie)
+                    }
+                    ddbMapper?.save(userData)
+                } catch (err: Exception) {
+                    Log.e(TAG, err.message.toString())
+                    throw err
+                }
+            }
+        }
+    }
+
+    companion object {
+        val TAG: String? = MovieRepository::class.simpleName
     }
 
 }
