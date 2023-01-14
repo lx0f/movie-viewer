@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import android.util.Log
 import androidx.room.Room
+import com.amazonaws.auth.AWSBasicCognitoIdentityProvider
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserState.*

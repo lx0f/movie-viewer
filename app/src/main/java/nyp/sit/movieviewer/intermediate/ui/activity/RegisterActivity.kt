@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import nyp.sit.movieviewer.intermediate.databinding.ActivityRegisterBinding
 import nyp.sit.movieviewer.intermediate.domain.status.RegisterStatus
+import nyp.sit.movieviewer.intermediate.domain.status.RegisterStatus.*
 import nyp.sit.movieviewer.intermediate.entity.User
 import nyp.sit.movieviewer.intermediate.ui.viewmodel.RegisterViewModel
 
@@ -31,18 +32,25 @@ class RegisterActivity : AppCompatActivity() {
     private fun submit() {
         val statusObserver = Observer<RegisterStatus> { status: RegisterStatus? ->
             when (status) {
-                RegisterStatus.FAIL -> Log.d(TAG, "FAIL")
-                RegisterStatus.LOADING, null -> Log.d(TAG, "LOADING...")
-                RegisterStatus.SUCCESS -> {
+                FAIL -> Log.d(TAG, "FAIL")
+                LOADING, null -> Log.d(TAG, "LOADING...")
+                SUCCESS -> {
                     Log.d(TAG, "SUCCESS")
                     val intent = Intent(this, VerifyCodeActivity::class.java)
                     startActivity(intent)
                 }
-                RegisterStatus.LOGIN_NAME_EXITS -> {
+                LOGIN_NAME_EXITS -> {
                     binding.loginNameInput.error = "Enter a different login name."
                 }
-                RegisterStatus.ADMIN_NUMBER_EXISTS -> {
+                ADMIN_NUMBER_EXISTS -> {
                     binding.adminNumberInput.error = "Enter a different admin number."
+                }
+                INVALID_PASSWORD -> {
+                    binding.passwordInput.error = "Invalid password." +
+                            "Minimum length of 8." +
+                            "Require number." +
+                            "Require uppercase letter." +
+                            "Require lowercase letter."
                 }
             }
         }

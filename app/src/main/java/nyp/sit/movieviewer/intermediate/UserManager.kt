@@ -1,11 +1,14 @@
 package nyp.sit.movieviewer.intermediate
 
+import android.util.Log
+import com.amazonaws.mobile.client.AWSMobileClient
 import kotlinx.coroutines.*
 import nyp.sit.movieviewer.intermediate.data.IUserRepository
 import nyp.sit.movieviewer.intermediate.domain.exception.AdminNumberExists
 import nyp.sit.movieviewer.intermediate.domain.exception.InvalidCredentials
 import nyp.sit.movieviewer.intermediate.domain.exception.LoginNameExists
 import nyp.sit.movieviewer.intermediate.entity.User
+import java.lang.Exception
 
 class UserManager(private val repository: IUserRepository, private val setUser: (User?) -> Unit) {
 
@@ -31,7 +34,8 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
         coroutineScope {
             launch(Dispatchers.IO) {
                 val loginNameUserJob = async { repository.getUserByLoginName(user.login_name!!) }
-                val adminNumberUserJob = async { repository.getUserByAdminNumber(user.admin_number!!) }
+                val adminNumberUserJob =
+                    async { repository.getUserByAdminNumber(user.admin_number!!) }
                 val loginNameExists = loginNameUserJob.await() != null
                 val adminNumberExists = adminNumberUserJob.await() != null
 
@@ -48,6 +52,34 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
                 setUser(user)
 
                 awaitAll(addUserJob, sendCodeJob)
+            }
+        }
+    }
+
+    suspend fun registerWithCognito(user: User) {
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                val signUpJob = async {
+                    AWSMobileClient.getInstance().signUp(
+                        user.login_name,
+                        user.password,
+                        mapOf(
+                            "email" to user.email,
+                            "custom:AdminNumber" to user.admin_number,
+                            "custom:PemGrp" to user.pem_group
+                        ),
+                        null,
+                    )
+                }
+                try {
+                    val result = signUpJob.await()
+                    Log.d(TAG, "User sub: ${result?.userSub.toString()}")
+                    Log.d(TAG, "Confirmation state:${result?.confirmationState.toString()}")
+                    setUser(user)
+                } catch (e: Exception) {
+                    Log.e(TAG, e.message.toString(), e)
+                    throw e
+                }
             }
         }
     }
@@ -71,5 +103,9 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
                 setUser(null)
             }
         }
+    }
+
+    companion object {
+        val TAG: String? = UserManager::class.simpleName
     }
 }

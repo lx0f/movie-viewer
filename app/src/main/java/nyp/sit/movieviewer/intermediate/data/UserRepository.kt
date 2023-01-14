@@ -1,5 +1,10 @@
 package nyp.sit.movieviewer.intermediate.data
 
+import com.amazonaws.auth.AWSBasicCognitoIdentityProvider
+import com.amazonaws.auth.AWSCognitoIdentityProvider
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.config.AWSConfiguration
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import nyp.sit.movieviewer.intermediate.entity.User
@@ -20,7 +25,7 @@ class UserRepository : IUserRepository {
     }
 
     override suspend fun getUserByAdminNumber(adminNumber: String): User? {
-        return users.firstOrNull { u -> u.admin_number == adminNumber }
+         return users.firstOrNull { u -> u.admin_number == adminNumber }
     }
 
     override suspend fun getUserByLoginName(loginName: String): User? {

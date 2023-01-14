@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.amazonaws.services.cognitoidentityprovider.model.InvalidPasswordException
 import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.intermediate.MovieApplication
 import nyp.sit.movieviewer.intermediate.UserManager
@@ -20,13 +21,14 @@ class RegisterViewModel(
     fun submit(user: User): LiveData<RegisterStatus> = liveData(Dispatchers.IO) {
         emit(RegisterStatus.LOADING)
         try {
-            userManager.register(user)
+            userManager.registerWithCognito(user)
             emit(RegisterStatus.SUCCESS)
         } catch (err: Exception) {
             emit(RegisterStatus.FAIL)
             when (err) {
                 is LoginNameExists -> emit(RegisterStatus.LOGIN_NAME_EXITS)
                 is AdminNumberExists -> emit(RegisterStatus.ADMIN_NUMBER_EXISTS)
+                is InvalidPasswordException -> emit(RegisterStatus.INVALID_PASSWORD)
             }
         }
     }
