@@ -22,7 +22,9 @@ class MovieApplication : Application() {
             this.applicationContext,
             MovieDatabase::class.java,
             "moviedatabase"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
         movieRepository = MovieRepository(
             database.movieDao(),
             database.favouriteMovieDao(),

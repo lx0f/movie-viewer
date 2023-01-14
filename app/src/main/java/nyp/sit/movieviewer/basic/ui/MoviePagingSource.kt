@@ -31,7 +31,7 @@ class MoviePagingSource(
                 val nextKey = if (movies.isEmpty()) {
                     null
                 } else {
-                    position + 20
+                    position + 1
                 }
                 LoadResult.Page(
                     data = movies,
