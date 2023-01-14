@@ -8,14 +8,17 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nyp.sit.movieviewer.basic.R
 import nyp.sit.movieviewer.basic.databinding.ActivityMovieListBinding
+import nyp.sit.movieviewer.basic.domain.QueryType
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
 import nyp.sit.movieviewer.basic.ui.MovieAdapter
@@ -33,14 +36,14 @@ class MovieListActivity : AppCompatActivity() {
         binding = ActivityMovieListBinding.inflate(layoutInflater)
         adapter = MovieAdapter(
             object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-                return oldItem.id == newItem.id
-            }
+                override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                    return oldItem.id == newItem.id
+                }
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-                return oldItem == newItem
-            }
-        },
+                override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                    return oldItem == newItem
+                }
+            },
             object : MovieAdapter.OnItemClickListener {
                 override fun onItemClick(movie: Movie) {
                     val intent = Intent(this@MovieListActivity, MovieDetailActivity::class.java)
@@ -53,9 +56,9 @@ class MovieListActivity : AppCompatActivity() {
 
         binding.movieList.adapter = adapter
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.movies.collectLatest { pagingData ->
-                adapter.submitData(pagingData)
+        viewModel.movies.observe(this@MovieListActivity) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                adapter.submitData(it)
             }
         }
 
@@ -69,6 +72,8 @@ class MovieListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.title) {
+            "Sort By Popularity" -> viewModel.changeQuery(QueryType.POPULAR)
+            "Sort By Ratings" -> viewModel.changeQuery(QueryType.TOP_RATED)
             "View Favourites" -> {
                 val intent = Intent(this, FavouriteMovieListActivity::class.java)
                 startActivity(intent)

@@ -1,5 +1,10 @@
 package nyp.sit.movieviewer.basic.data
 
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -9,6 +14,7 @@ import nyp.sit.movieviewer.basic.entity.FavouriteMovie
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
 import nyp.sit.movieviewer.basic.ui.MoviePagingSource
+import nyp.sit.movieviewer.basic.ui.viewmodel.MovieListViewModel
 
 class MovieRepository(
     private val movieDao: MovieDao,
@@ -73,6 +79,14 @@ class MovieRepository(
         return favouriteMoviesAsMovie as Flow<List<Movie>>
     }
 
-    override fun getMoviePagingSource(queryType: QueryType) = MoviePagingSource(webDataSource, queryType)
+    override fun getMovieStream(queryType: QueryType): LiveData<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = MovieListViewModel.ITEMS_PER_PAGE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviePagingSource(webDataSource, queryType) }
+        ).liveData
+    }
 
 }

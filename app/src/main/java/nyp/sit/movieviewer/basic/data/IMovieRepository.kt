@@ -1,5 +1,7 @@
 package nyp.sit.movieviewer.basic.data
 
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import nyp.sit.movieviewer.basic.domain.QueryType
 import nyp.sit.movieviewer.basic.entity.FavouriteMovie
@@ -16,5 +18,5 @@ interface IMovieRepository {
     fun getAllFavouriteMovies(user: User): Flow<List<FavouriteMovie>>
     @Suppress("UNCHECKED_CAST")
     fun getAllFavouriteMoviesAsMovie(user: User): Flow<List<Movie>>
-    fun getMoviePagingSource(queryType: QueryType): MoviePagingSource
+    fun getMovieStream(queryType: QueryType): LiveData<PagingData<Movie>>
 }
