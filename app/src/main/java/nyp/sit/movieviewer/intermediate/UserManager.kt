@@ -124,6 +124,7 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
         coroutineScope {
             launch(Dispatchers.IO) {
                 setUser(null)
+                AWSMobileClient.getInstance().signOut()
             }
         }
     }
