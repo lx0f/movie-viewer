@@ -1,0 +1,25 @@
+{
+  "IdentityManager": {
+    "Default": {}
+  },
+  "CredentialsProvider": {
+    "CognitoIdentity": {
+      "Default": {
+        "PoolId": "ap-southeast-1:77849638-2e33-4ebb-a907-9eddb802f137",
+        "Region": "ap-southeast-1"
+      }
+    }
+  },
+  "CognitoUserPool": {
+    "Default": {
+      "PoolId": "ap-southeast-1_th4flKmDD",
+      "AppClientId": "76o636epeofa2n9srbdclq6i5k",
+      "Region": "ap-southeast-1"
+    }
+  },
+  "DynamoDBObjectMapper": {
+    "Default": {
+      "Region": "ap-southeast-1"
+    }
+  }
+}
