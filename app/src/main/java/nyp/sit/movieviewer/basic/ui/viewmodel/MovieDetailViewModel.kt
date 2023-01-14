@@ -1,5 +1,6 @@
 package nyp.sit.movieviewer.basic.ui.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,8 +13,13 @@ import nyp.sit.movieviewer.basic.domain.status.AddFavouriteStatus
 import nyp.sit.movieviewer.basic.domain.exception.FavouriteMovieExists
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
+import nyp.sit.movieviewer.basic.util.TheMovieDbUrlHelper
 
 class MovieDetailViewModel(private val repository: IMovieRepository, private val user: User) : ViewModel() {
+
+    fun getPosterImageUrl(imagePath: String): Uri {
+        return TheMovieDbUrlHelper.builImageUrl(imagePath)
+    }
 
     suspend fun checkMovieIsFavourite(movie: Movie): Boolean {
         return repository.checkMovieIsFavourite(user, movie)

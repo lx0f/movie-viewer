@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nyp.sit.movieviewer.basic.R
@@ -29,10 +30,17 @@ class MovieDetailActivity : AppCompatActivity() {
         binding = ActivityMovieDetailBinding.inflate(layoutInflater)
         movie = intent.getParcelableExtra("movie")!!
         binding.apply {
-            movieTitle.text = movie.title ?: "Error"
+            Picasso.get()
+                .load(viewModel.getPosterImageUrl(movie.poster_path ?: ""))
+                .into(binding.posterIV)
             movieOverview.text = movie.overview ?: "Error"
-            movieLangauge.text = movie.original_language ?: "Error"
+            movieLanguage.text = movie.original_language ?: "Error"
             movieReleaseDate.text = movie.release_date ?: "Error"
+            movieHasvideo.text = movie.video.toString()
+            movieIsAdult.text = movie.adult.toString()
+            moviePopularity.text = movie.popularity.toString()
+            movieVoteAvg.text = movie.vote_average.toString()
+            movieVoteCount.text = movie.vote_count.toString()
         }
         setContentView(binding.root)
     }

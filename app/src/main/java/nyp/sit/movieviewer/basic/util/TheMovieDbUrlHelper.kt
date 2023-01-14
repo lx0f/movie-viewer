@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import nyp.sit.movieviewer.basic.domain.QueryType
 import java.net.HttpURLConnection
+import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
@@ -12,6 +13,8 @@ class TheMovieDbUrlHelper {
 
         private val TAG: String? = this::class.simpleName
         private const val BASE_URL = "https://api.themoviedb.org/3"
+        private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
+        private const val IMAGE_SIZE_PARAM = "w185"
 
         private const val MOVIE_PATH = "movie"
         private const val SEARCH_PATH = "search"
@@ -67,6 +70,13 @@ class TheMovieDbUrlHelper {
             } finally {
                 connection.disconnect()
             }
+        }
+
+        fun builImageUrl(imagePath: String): Uri {
+            return Uri.parse(IMAGE_BASE_URL).buildUpon()
+                .appendEncodedPath(IMAGE_SIZE_PARAM)
+                .appendEncodedPath(imagePath)
+                .build()
         }
     }
 }

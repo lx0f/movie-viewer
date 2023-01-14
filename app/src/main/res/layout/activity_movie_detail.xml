@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.activity.MovieDetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp">
 
-        <TextView
-            android:id="@+id/movie_title"
+        <ImageView
+            android:id="@+id/posterIV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            tools:text="Frozen 2"
-            />
+            android:layout_centerInParent="true"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerInside"
+            tools:src="@drawable/defaultimage" />
 
     </RelativeLayout>
 
@@ -28,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -47,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="Other details"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,10 +87,78 @@
                     android:layout_weight="0.5"
                     android:paddingRight="5dp"
                     android:paddingBottom="20dp"
+                    android:text="Populartity:" />
+
+                <TextView
+                    android:id="@+id/movie_popularity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingBottom="20dp"
+                    android:text="Popularity" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="20dp"
+                    android:text="Vote count:" />
+
+                <TextView
+                    android:id="@+id/movie_vote_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingBottom="20dp"
+                    android:text="vote_count" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="20dp"
+                    android:text="Vote Average:" />
+
+                <TextView
+                    android:id="@+id/movie_vote_avg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingBottom="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="20dp"
                     android:text="Langauge:" />
 
                 <TextView
-                    android:id="@+id/movie_langauge"
+                    android:id="@+id/movie_language"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -95,8 +166,49 @@
                     android:text="langauge" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="20dp"
+                    android:text="Adult movie:" />
+
+                <TextView
+                    android:id="@+id/movie_is_adult"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:paddingBottom="20dp"
+                    android:text="isAdult" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Video" />
+
+                <TextView
+                    android:id="@+id/movie_hasvideo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
-
-
