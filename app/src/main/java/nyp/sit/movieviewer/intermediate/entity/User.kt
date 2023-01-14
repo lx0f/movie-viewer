@@ -7,4 +7,5 @@ data class User(
     var admin_number: String? = null,
     var pem_group: String? = null,
     var verified: Boolean = false,
+    var id: String? = null,
 )

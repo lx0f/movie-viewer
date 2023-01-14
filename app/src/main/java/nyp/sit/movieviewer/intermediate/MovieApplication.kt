@@ -42,6 +42,7 @@ class MovieApplication : Application() {
         userRepository = UserRepository()
 
         // Instantiate AWSMobileClient
+        userManager = UserManager(userRepository) { u: User? -> user = u }
         AWSMobileClient.getInstance().initialize(
             this.applicationContext,
             AWSConfiguration(this.applicationContext, R.raw.awsconfiguration),
@@ -52,6 +53,7 @@ class MovieApplication : Application() {
                         GUEST -> {}
                         // When signed in redirect to MovieListActivity
                         SIGNED_IN -> {
+                            val user = userManager.getUserFromCognito()
                             val intent = Intent(
                                 this@MovieApplication.applicationContext,
                                 MovieListActivity::class.java
@@ -72,7 +74,6 @@ class MovieApplication : Application() {
                         throw e
                 }
             })
-        userManager = UserManager(userRepository) { u: User? -> user = u }
     }
 
     companion object {

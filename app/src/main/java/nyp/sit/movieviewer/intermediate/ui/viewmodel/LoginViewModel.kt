@@ -1,5 +1,6 @@
 package nyp.sit.movieviewer.intermediate.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +10,6 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.Dispatchers
 import nyp.sit.movieviewer.intermediate.MovieApplication
 import nyp.sit.movieviewer.intermediate.UserManager
-import nyp.sit.movieviewer.intermediate.domain.exception.InvalidCredentials
 import nyp.sit.movieviewer.intermediate.domain.status.LoginStatus
 
 class LoginViewModel(private val userManager: UserManager) : ViewModel() {
@@ -18,14 +18,16 @@ class LoginViewModel(private val userManager: UserManager) : ViewModel() {
         liveData(Dispatchers.IO) {
             emit(LoginStatus.LOADING)
             try {
-                userManager.login(loginName, password)
+                userManager.loginWithCognito(loginName, password)
                 emit(LoginStatus.SUCCESS)
-            } catch (err: InvalidCredentials) {
+            } catch (err: Exception) {
+                Log.e(TAG, err.message.toString())
                 emit(LoginStatus.INVALID)
             }
         }
 
     companion object {
+        val TAG = LoginViewModel::class.simpleName
         val Factory = LoginViewModelFactory()
 
         class LoginViewModelFactory : ViewModelProvider.Factory {

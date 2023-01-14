@@ -8,7 +8,7 @@ import nyp.sit.movieviewer.intermediate.domain.exception.AdminNumberExists
 import nyp.sit.movieviewer.intermediate.domain.exception.InvalidCredentials
 import nyp.sit.movieviewer.intermediate.domain.exception.LoginNameExists
 import nyp.sit.movieviewer.intermediate.entity.User
-import java.lang.Exception
+import kotlin.Exception
 
 class UserManager(private val repository: IUserRepository, private val setUser: (User?) -> Unit) {
 
@@ -97,12 +97,51 @@ class UserManager(private val repository: IUserRepository, private val setUser: 
         }
     }
 
+    suspend fun loginWithCognito(loginName: String, password: String) {
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                val signInJob = async {
+                    AWSMobileClient.getInstance().signIn(
+                        loginName,
+                        password,
+                        null,
+                    )
+                }
+                try {
+                    val result = signInJob.await()
+                    Log.d(TAG, result.signInState.name)
+                } catch (e: Exception) {
+                    Log.e(TAG, e.message.toString(), e)
+                    throw e
+                }
+                val user = getUserFromCognito()
+                setUser(user)
+            }
+        }
+    }
+
     suspend fun signOut() {
         coroutineScope {
             launch(Dispatchers.IO) {
                 setUser(null)
             }
         }
+    }
+
+    fun getUserFromCognito(): User {
+        val attributes = AWSMobileClient.getInstance().userAttributes
+        val username = AWSMobileClient.getInstance().username
+        val user = User(
+            login_name = username,
+            password = null,
+            email = attributes["email"],
+            admin_number = attributes["custom:AdminNumber"],
+            pem_group = attributes["custom:PemGrp"],
+            verified = attributes["email_verified"] == "true", // NYP's Cognito setup auto-confirm new accounts
+            id = attributes["sub"]
+        )
+        setUser(user)
+        return user
     }
 
     companion object {
