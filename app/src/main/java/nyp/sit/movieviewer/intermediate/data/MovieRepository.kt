@@ -71,7 +71,8 @@ class MovieRepository(
     }
 
     override suspend fun checkMovieIsFavourite(user: User, movie: Movie): Boolean {
-        return favouriteMovieDao.checkMovieIsFavourite(user.login_name!!, movie.title!!)
+        val userData = ddbMapper?.load(UserData::class.java, user.login_name)
+        return userData?.favouriteMovies?.any { m -> m.title == movie.title } ?: false
     }
 
     override fun getAllFavouriteMovies(user: User): Flow<List<FavouriteMovie>> {
