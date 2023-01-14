@@ -1,24 +1,33 @@
 package nyp.sit.movieviewer.basic.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import nyp.sit.movieviewer.basic.MovieApplication
 import nyp.sit.movieviewer.basic.UserManager
 import nyp.sit.movieviewer.basic.data.IMovieRepository
+import nyp.sit.movieviewer.basic.domain.QueryType
 import nyp.sit.movieviewer.basic.entity.Movie
-
 
 class MovieListViewModel(
     repository: IMovieRepository,
     private val userManager: UserManager
 ) : ViewModel() {
 
-    val movies: LiveData<List<Movie>> = repository.getAllMovies().asLiveData(Dispatchers.IO)
+    private val query = QueryType.POPULAR
+
+    val movies: Flow<PagingData<Movie>> = Pager(
+        config = PagingConfig(pageSize = ITEMS_PER_PAGE, enablePlaceholders = false),
+        pagingSourceFactory = { repository.getMoviePagingSource(query) }
+    )
+        .flow
+        .cachedIn(viewModelScope)
 
     suspend fun signOut() {
         userManager.signOut()
@@ -40,5 +49,7 @@ class MovieListViewModel(
                 ) as T
             }
         }
+
+        private const val ITEMS_PER_PAGE = 20
     }
 }

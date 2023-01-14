@@ -5,6 +5,7 @@ import androidx.room.Room
 import nyp.sit.movieviewer.basic.data.*
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
+import nyp.sit.movieviewer.basic.util.TheMovieDbUrlHelper
 
 class MovieApplication : Application() {
 
@@ -16,12 +17,17 @@ class MovieApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        TheMovieDbUrlHelper.registerApiKey(getString(R.string.api_key))
         database = Room.databaseBuilder(
             this.applicationContext,
             MovieDatabase::class.java,
             "moviedatabase"
         ).build()
-        movieRepository = MovieRepository(database.favouriteMovieDao())
+        movieRepository = MovieRepository(
+            database.movieDao(),
+            database.favouriteMovieDao(),
+            MovieWebDataSource()
+        )
         userRepository = UserRepository()
         userManager = UserManager(userRepository) { u: User? -> user = u }
     }

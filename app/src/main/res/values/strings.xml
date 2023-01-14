@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Movie Viewer</string>
+    <string name="api_key">871a2972550e3c88b93bfb9711b39e85</string>
 </resources>

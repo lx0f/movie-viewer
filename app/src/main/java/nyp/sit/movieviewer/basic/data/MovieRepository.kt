@@ -3,18 +3,28 @@ package nyp.sit.movieviewer.basic.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import nyp.sit.movieviewer.basic.domain.QueryType
 import nyp.sit.movieviewer.basic.domain.exception.FavouriteMovieExists
 import nyp.sit.movieviewer.basic.entity.FavouriteMovie
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
+import nyp.sit.movieviewer.basic.ui.MoviePagingSource
 
-class MovieRepository(private val favouriteMovieDao: FavouriteMovieDao) : IMovieRepository {
-    private val movies = MovieFixture.getAllMovies()
+class MovieRepository(
+    private val movieDao: MovieDao,
+    private val favouriteMovieDao: FavouriteMovieDao,
+    private val webDataSource: MovieWebDataSource
+) : IMovieRepository {
+    private val movies = arrayListOf<Movie>()
 
     // TODO: Change this to real database logic
     // This is meant to be temporary
     override fun getAllMovies(): Flow<List<Movie>> = flow {
-        emit(movies)
+        if (movieDao.isNotEmpty()) {
+            emit(movieDao.getAllMovies())
+        } else {
+            emit(movies)
+        }
     }
 
     override suspend fun addFavouriteMovie(user: User, movie: Movie) {
@@ -30,7 +40,20 @@ class MovieRepository(private val favouriteMovieDao: FavouriteMovieDao) : IMovie
     }
 
     override suspend fun getMovieByTitle(title: String): Movie? {
-        return movies.firstOrNull { m -> m.title == title }
+        // check if movie is database
+        val movieFromDb = movieDao.getMovieByTitle(title)
+        if (movieFromDb != null)
+            return movieFromDb
+
+        // else retrieve from TheMovieDb
+        val movieFromWeb = webDataSource.getMovieByTitle(title)
+
+        // and persist it locally if not null
+        if (movieFromWeb != null) {
+            movieDao.addMovie(movieFromWeb)
+        }
+
+        return movieFromWeb
     }
 
     override suspend fun checkMovieIsFavourite(user: User, movie: Movie): Boolean {
@@ -41,12 +64,15 @@ class MovieRepository(private val favouriteMovieDao: FavouriteMovieDao) : IMovie
         return favouriteMovieDao.getAllFavouriteMovies(user.login_name!!)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun getAllFavouriteMoviesAsMovie(user: User): Flow<List<Movie>> {
         val favouriteMovies = favouriteMovieDao.getAllFavouriteMovies(user.login_name!!)
         val favouriteMoviesAsMovie = favouriteMovies.map { list ->
-            list.map { f -> movies.first { m -> m.title == f.movie_title } }
+            list.map { f -> getMovieByTitle(f.movie_title) }
         }
-        return favouriteMoviesAsMovie
+        return favouriteMoviesAsMovie as Flow<List<Movie>>
     }
+
+    override fun getMoviePagingSource(queryType: QueryType) = MoviePagingSource(webDataSource, queryType)
 
 }

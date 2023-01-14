@@ -31,7 +31,7 @@ class MovieDetailActivity : AppCompatActivity() {
         binding.apply {
             movieTitle.text = movie.title ?: "Error"
             movieOverview.text = movie.overview ?: "Error"
-            movieLangauge.text = movie.original_langauge ?: "Error"
+            movieLangauge.text = movie.original_language ?: "Error"
             movieReleaseDate.text = movie.release_date ?: "Error"
         }
         setContentView(binding.root)
