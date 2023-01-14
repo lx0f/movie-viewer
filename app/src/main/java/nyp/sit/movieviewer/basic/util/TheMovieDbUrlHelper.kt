@@ -45,6 +45,7 @@ class TheMovieDbUrlHelper {
         fun builUrl(title: String): URL {
             val urlString = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(SEARCH_PATH)
+                .appendEncodedPath(MOVIE_PATH)
                 .appendQueryParameter(API_KEY_PARAMETER, API_KEY)
                 .appendQueryParameter(QUERY_KEY_PARAMETER, title)
                 .build()
