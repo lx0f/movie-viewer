@@ -1,10 +1,16 @@
 package nyp.sit.movieviewer.intermediate
 
 import android.app.Application
+import android.util.Log
 import androidx.room.Room
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.UserStateDetails
+import com.amazonaws.mobile.config.AWSConfiguration
 import nyp.sit.movieviewer.intermediate.data.*
 import nyp.sit.movieviewer.intermediate.entity.User
 import nyp.sit.movieviewer.intermediate.util.TheMovieDbUrlHelper
+import java.lang.Exception
 
 class MovieApplication : Application() {
 
@@ -30,6 +36,26 @@ class MovieApplication : Application() {
             MovieWebDataSource()
         )
         userRepository = UserRepository()
+
+        // Instantiate AWSMobileClient
+        AWSMobileClient.getInstance().initialize(
+            this.applicationContext,
+            AWSConfiguration(this.applicationContext, R.raw.awsconfiguration),
+            object : Callback<UserStateDetails> {
+                override fun onResult(result: UserStateDetails?) {
+                    Log.d(TAG, result?.userState?.name ?: "AWSMobileClient Instantiation: Fail")
+                }
+
+                override fun onError(e: Exception?) {
+                    Log.e(TAG, e?.message.toString(), e)
+                    if (e != null)
+                        throw e
+                }
+            })
         userManager = UserManager(userRepository) { u: User? -> user = u }
+    }
+
+    companion object {
+        val TAG: String? = MovieApplication::class.simpleName
     }
 }
