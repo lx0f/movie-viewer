@@ -29,7 +29,7 @@ class ExampleInstrumentedTest {
     @Test
     fun checkJsonMovie(){
 
-        var jsonStr = "{ \"page\": 1,\n" +
+        val jsonStr = "{ \"page\": 1,\n" +
                 "  \"total_results\": 2,\n" +
                 "  \"total_pages\": 1,\n" +
                 "  \"results\": [\n" +
@@ -79,25 +79,26 @@ class ExampleInstrumentedTest {
 
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        var results = Json.parseToJsonElement(jsonStr).jsonObject["results"]!!
+        val results = Json.parseToJsonElement(jsonStr).jsonObject["results"]!!
         val listitems = Json.decodeFromJsonElement<List<Movie>>(results)
 
         assertTrue(listitems!=null)
-        assertEquals(2, listitems?.size)
-        assertEquals(2427,listitems!!.get(0).vote_count)
-        assertEquals(297802,listitems!!.get(0).id)
-        assertEquals(false,listitems!!.get(0).video)
-        assertEquals(6.9,listitems!!.get(0).vote_average,0.0)
-        assertEquals("Aquaman",listitems!!.get(0).title)
-        assertEquals(549.381,listitems!!.get(0).popularity,0.0)
-        assertEquals("/5Kg76ldv7VxeX9YlcQXiowHgdX6.jpg",listitems!!.get(0).poster_path)
-        assertEquals("en",listitems!!.get(0).original_language)
-        assertEquals("Aquaman",listitems!!.get(0).original_title)
-        assertEquals(listOf(28,14,878,12),listitems!!.get(0).genre_ids)
-        assertEquals("/5A2bMlLfJrAfX9bqAibOL2gCruF.jpg",listitems!!.get(0).backdrop_path)
-        assertEquals(false,listitems!!.get(0).adult)
-        assertEquals("Arthur Curry learns that he is the heir to the underwater kingdom of Atlantis, and must step forward to lead his people and be a hero to the world.",listitems!!.get(0).overview)
-        assertEquals("2018-12-07",listitems!!.get(0).release_date)
-        assertEquals("Bumblebee",listitems!!.get(1).title)
+        assertEquals(2, listitems.size)
+        assertEquals(2427, listitems[0].vote_count)
+        assertEquals(297802, listitems[0].id)
+        assertEquals(false, listitems[0].video)
+        assertEquals(6.9, listitems[0].vote_average,0.0)
+        assertEquals("Aquaman", listitems[0].title)
+        assertEquals(549.381, listitems[0].popularity,0.0)
+        assertEquals("/5Kg76ldv7VxeX9YlcQXiowHgdX6.jpg", listitems[0].poster_path)
+        assertEquals("en", listitems[0].original_language)
+        assertEquals("Aquaman", listitems[0].original_title)
+        assertEquals(listOf(28,14,878,12), listitems[0].genre_ids)
+        assertEquals("/5A2bMlLfJrAfX9bqAibOL2gCruF.jpg", listitems[0].backdrop_path)
+        assertEquals(false, listitems[0].adult)
+        assertEquals("Arthur Curry learns that he is the heir to the underwater kingdom of Atlantis, and must step forward to lead his people and be a hero to the world.",
+            listitems[0].overview)
+        assertEquals("2018-12-07", listitems[0].release_date)
+        assertEquals("Bumblebee", listitems[1].title)
     }
 }

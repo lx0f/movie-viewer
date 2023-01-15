@@ -1,10 +1,5 @@
 package nyp.sit.movieviewer.intermediate.data
 
-import com.amazonaws.auth.AWSBasicCognitoIdentityProvider
-import com.amazonaws.auth.AWSCognitoIdentityProvider
-import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobile.config.AWSConfiguration
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import nyp.sit.movieviewer.intermediate.entity.User

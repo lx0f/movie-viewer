@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Intent
 import android.util.Log
 import androidx.room.Room
-import com.amazonaws.auth.AWSBasicCognitoIdentityProvider
 import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
@@ -18,15 +17,14 @@ import nyp.sit.movieviewer.intermediate.data.*
 import nyp.sit.movieviewer.intermediate.entity.User
 import nyp.sit.movieviewer.intermediate.ui.activity.MovieListActivity
 import nyp.sit.movieviewer.intermediate.util.TheMovieDbUrlHelper
-import java.lang.Exception
 
 class MovieApplication : Application() {
 
     private lateinit var userRepository: IUserRepository
     lateinit var movieRepository: IMovieRepository
     lateinit var userManager: UserManager
-    lateinit var database: MovieDatabase
-    lateinit var ddbMapper: DynamoDBMapper
+    private lateinit var database: MovieDatabase
+    private lateinit var ddbMapper: DynamoDBMapper
     var user: User? = null
 
     override fun onCreate() {
