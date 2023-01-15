@@ -10,7 +10,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "nyp.sit.movieviewer.intermediate"
+        applicationId "nyp.sit.movieviewer.advanced"
         minSdk 27
         targetSdk 32
         versionCode 1
