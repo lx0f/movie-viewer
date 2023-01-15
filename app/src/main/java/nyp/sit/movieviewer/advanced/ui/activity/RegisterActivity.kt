@@ -36,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
                 LOADING, null -> Log.d(TAG, "LOADING...")
                 SUCCESS -> {
                     Log.d(TAG, "SUCCESS")
-                    val intent = Intent(this, VerifyCodeActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 }
                 LOGIN_NAME_EXITS -> {
