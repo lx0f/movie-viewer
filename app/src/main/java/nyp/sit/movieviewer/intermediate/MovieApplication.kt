@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.room.Room
 import com.amazonaws.auth.AWSBasicCognitoIdentityProvider
+import com.amazonaws.auth.CognitoCachingCredentialsProvider
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserState.*
@@ -65,12 +66,6 @@ class MovieApplication : Application() {
                         UNKNOWN -> {}
                         null -> {}
                     }
-                    val client = AmazonDynamoDBClient(
-                        AWSMobileClient.getInstance().credentials
-                    )
-                    client.setRegion(Region.getRegion("ap-southeast-1"))
-                    ddbMapper = DynamoDBMapper(client)
-                    movieRepository.ddbMapper = ddbMapper
                 }
 
                 override fun onError(e: Exception?) {
@@ -84,6 +79,31 @@ class MovieApplication : Application() {
             database.favouriteMovieDao(),
             MovieWebDataSource(),
         )
+        AWSMobileClient.getInstance().addUserStateListener {
+            when (it.userState) {
+                GUEST -> {}
+                SIGNED_IN -> {
+                    // get credentials
+                    val credentials = AWSMobileClient.getInstance().credentials
+                    val client = AmazonDynamoDBClient(credentials)
+                    client.setRegion(Region.getRegion("ap-southeast-1"))
+
+                    // setup ddbMapper
+                    ddbMapper = DynamoDBMapper(client)
+                    movieRepository.ddbMapper = ddbMapper
+                }
+                SIGNED_OUT -> {
+                    // clear credentials
+                    val config = AWSConfiguration(this.applicationContext, R.raw.awsconfiguration)
+                    val credentialsProvider = CognitoCachingCredentialsProvider(this.applicationContext, config)
+                    credentialsProvider.clear()
+                }
+                SIGNED_OUT_FEDERATED_TOKENS_INVALID -> {}
+                SIGNED_OUT_USER_POOLS_TOKENS_INVALID -> {}
+                UNKNOWN -> {}
+                null -> {}
+            }
+        }
     }
 
     companion object {
