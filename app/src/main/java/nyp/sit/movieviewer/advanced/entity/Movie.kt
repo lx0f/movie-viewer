@@ -1,13 +1,11 @@
 package nyp.sit.movieviewer.advanced.entity
 
-import android.os.Parcel
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBDocument
 import kotlinx.serialization.Serializable
-import nyp.sit.movieviewer.advanced.util.Converter
+import java.io.Serializable as JioSerializable
 
 @Serializable
 @DynamoDBDocument
@@ -41,54 +39,4 @@ data class Movie(
     var video: Boolean? = null,
     @ColumnInfo(name = "vote_average")
     var vote_average: Double = 0.0
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString(),
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readString(),
-        parcel.readString(),
-        Converter.fromString(parcel.readString()),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readDouble(),
-        parcel.readInt(),
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readDouble()
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(poster_path)
-        parcel.writeValue(adult)
-        parcel.writeString(overview)
-        parcel.writeString(release_date)
-        parcel.writeString(Converter.fromList(genre_ids))
-        parcel.writeString(original_title)
-        parcel.writeString(original_language)
-        parcel.writeString(title)
-        parcel.writeString(backdrop_path)
-        parcel.writeDouble(popularity)
-        parcel.writeInt(vote_count)
-        parcel.writeValue(video)
-        parcel.writeDouble(vote_average)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Movie> {
-        override fun createFromParcel(parcel: Parcel): Movie {
-            return Movie(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Movie?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}
+) : JioSerializable

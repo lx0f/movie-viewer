@@ -28,7 +28,7 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityMovieDetailBinding.inflate(layoutInflater)
-        movie = intent.getParcelableExtra("movie")!!
+        movie = intent.getSerializableExtra("movie")!! as Movie
         binding.apply {
             Picasso.get()
                 .load(viewModel.getPosterImageUrl(movie.poster_path ?: ""))
