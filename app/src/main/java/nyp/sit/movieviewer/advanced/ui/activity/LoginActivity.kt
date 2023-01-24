@@ -46,8 +46,10 @@ class LoginActivity : AppCompatActivity() {
                     Log.d(TAG, "INVALID")
                     binding.apply {
                         val err = "Please check if your credentials are correct."
-                        loginNameInput.error = err
-                        passwordInput.error = err
+                        loginNameInputLayout.error = err
+                        passwordInputLayout.error = err
+                        loginNameInputLayout.isErrorEnabled = true
+                        passwordInputLayout.isErrorEnabled = true
                     }
                 }
             }
@@ -62,12 +64,14 @@ class LoginActivity : AppCompatActivity() {
     private fun verifyFieldsNotEmpty(): Boolean {
         var hasError = false
         binding.apply {
-            if (loginNameInput.text.isEmpty()) {
-                loginNameInput.error = "Please enter your login name"
+            if (loginNameInput.text?.isEmpty() == true) {
+                loginNameInputLayout.error = "Please enter your login name"
+                loginNameInputLayout.isErrorEnabled = true
                 hasError = true
             }
-            if (passwordInput.text.isEmpty()) {
-                passwordInput.error = "Please enter your password"
+            if (passwordInput.text?.isEmpty() == true) {
+                passwordInputLayout.error = "Please enter your password"
+                passwordInputLayout.isErrorEnabled = true
                 hasError = true
             }
         }
