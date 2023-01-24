@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nyp.sit.movieviewer.advanced.R
 import nyp.sit.movieviewer.advanced.databinding.ActivityMovieListBinding
@@ -50,9 +53,24 @@ class MovieListActivity : AppCompatActivity() {
 
 
         binding.movieList.adapter = adapter
+        binding.movieListProgressIndicator.isIndeterminate = false
+
+        val j = lifecycleScope.launch {
+            var progress = binding.movieListProgressIndicator.progress
+            while (progress < 100) {
+                delay(500)
+                if (progress == 100) {
+                    return@launch
+                }
+                progress += 5
+                binding.movieListProgressIndicator.setProgressCompat(progress, true)
+            }
+        }
 
         viewModel.movies.observe(this@MovieListActivity) {
             lifecycleScope.launch(Dispatchers.IO) {
+                j.cancel()
+                binding.movieListProgressIndicator.setProgressCompat(100, true)
                 adapter.submitData(it)
             }
         }
