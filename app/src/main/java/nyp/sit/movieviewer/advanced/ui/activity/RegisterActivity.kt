@@ -26,6 +26,9 @@ class RegisterActivity : AppCompatActivity() {
                 submit()
             }
         }
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
         setContentView(binding.root)
     }
 
@@ -72,24 +75,24 @@ class RegisterActivity : AppCompatActivity() {
     private fun verifyFieldsNotEmpty(): Boolean {
         var hasError = false
         binding.apply {
-            if (loginNameInput.text.isEmpty()) {
-                loginNameInput.error = "Please enter your login name"
+            if (loginNameInput.text?.isEmpty() == true) {
+                loginNameInputLayout.error = "Please enter your login name"
                 hasError = true
             }
-            if (passwordInput.text.isEmpty()) {
-                passwordInput.error = "Please enter your password"
+            if (passwordInput.text?.isEmpty() == true) {
+                passwordInputLayout.error = "Please enter your password"
                 hasError = true
             }
-            if (adminNumberInput.text.isEmpty()) {
-                adminNumberInput.error = "Please enter your admin number"
+            if (adminNumberInput.text?.isEmpty() == true) {
+                adminNumberInputLayout.error = "Please enter your admin number"
                 hasError = true
             }
-            if (emailInput.text.isEmpty()) {
-                emailInput.error = "Please enter your email address"
+            if (emailInput.text?.isEmpty() == true) {
+                emailInputLayout.error = "Please enter your email address"
                 hasError = true
             }
-            if (pemGroupInput.text.isEmpty()) {
-                pemGroupInput.error = "Please enter your pem group"
+            if (pemGroupInput.text?.isEmpty() == true) {
+                pemGroupInputLayout.error = "Please enter your pem group"
                 hasError = true
             }
         }
