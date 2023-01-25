@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -41,6 +42,7 @@ class MovieDetailActivity : AppCompatActivity() {
             moviePopularity.text = movie.popularity.toString()
             movieVoteAvg.text = movie.vote_average.toString()
             movieVoteCount.text = movie.vote_count.toString()
+            addAsFavouriteButton.setOnClickListener { addAsFavourite() }
         }
         setContentView(binding.root)
     }
@@ -51,6 +53,7 @@ class MovieDetailActivity : AppCompatActivity() {
             if (!isFavourite) {
                 runOnUiThread {
                     menuInflater.inflate(R.menu.movie_detail_menu, menu)
+                    binding.addAsFavouriteButton.visibility = View.VISIBLE
                 }
             }
         }
