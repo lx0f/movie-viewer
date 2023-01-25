@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -53,6 +54,25 @@ class FavouriteMovieListActivity : AppCompatActivity() {
             intent.putExtra("movie", movie)
             startActivity(intent)
         }
+
+        val tab = binding.tabLayout.getTabAt(1)
+        binding.tabLayout.selectTab(tab)
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.text) {
+                    "Home" -> {
+                        val intent = Intent(this@FavouriteMovieListActivity, MovieListActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
 
         setContentView(binding.root)
     }

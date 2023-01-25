@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -74,6 +75,31 @@ class MovieListActivity : AppCompatActivity() {
                 adapter.submitData(it)
             }
         }
+
+        val tab = binding.tabLayout.getTabAt(0)
+        binding.tabLayout.selectTab(tab)
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.text) {
+                    "Favourites" -> {
+                        val intent = Intent(this@MovieListActivity, FavouriteMovieListActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                when (tab?.text) {
+                    "Home" -> {
+                        adapter.refresh()
+                        binding.movieList.smoothScrollToPosition(0)
+                    }
+                }
+            }
+        })
 
         setContentView(binding.root)
     }
