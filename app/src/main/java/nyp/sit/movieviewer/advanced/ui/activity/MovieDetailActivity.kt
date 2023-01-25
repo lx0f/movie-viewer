@@ -55,6 +55,10 @@ class MovieDetailActivity : AppCompatActivity() {
                     menuInflater.inflate(R.menu.movie_detail_menu, menu)
                     binding.addAsFavouriteButton.visibility = View.VISIBLE
                 }
+            } else {
+                runOnUiThread {
+                    binding.addAsFavouriteButton.visibility = View.GONE
+                }
             }
         }
         return super.onCreateOptionsMenu(menu)
@@ -74,7 +78,10 @@ class MovieDetailActivity : AppCompatActivity() {
         val statusObserver = Observer<AddFavouriteStatus> { status: AddFavouriteStatus? ->
             when (status) {
                 AddFavouriteStatus.LOADING, null -> Log.d(TAG, "LOADING...")
-                AddFavouriteStatus.SUCCESS -> Log.d(TAG, "SUCCESS")
+                AddFavouriteStatus.SUCCESS -> {
+                    Log.d(TAG, "SUCCESS")
+                    invalidateOptionsMenu()
+                }
                 AddFavouriteStatus.FAVOURITE_MOVIE_EXISTS -> Log.d(TAG, "FAVOURITE_MOVIE_EXITS")
             }
         }
