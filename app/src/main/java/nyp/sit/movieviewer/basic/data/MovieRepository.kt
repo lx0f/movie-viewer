@@ -8,7 +8,7 @@ import nyp.sit.movieviewer.basic.entity.FavouriteMovie
 import nyp.sit.movieviewer.basic.entity.Movie
 import nyp.sit.movieviewer.basic.entity.User
 
-class MovieRepository(private val favouriteMovieDao: FavouriteMovieDao) : IMovieRepository {
+class MovieRepository(private val favouriteMovieRepository: IFavouriteMovieRepository) : IMovieRepository {
     private val movies = MovieFixture.getAllMovies()
 
     // TODO: Change this to real database logic
@@ -18,15 +18,15 @@ class MovieRepository(private val favouriteMovieDao: FavouriteMovieDao) : IMovie
     }
 
     override suspend fun addFavouriteMovie(user: User, movie: Movie) {
-        val exists = favouriteMovieDao.checkMovieIsFavourite(user.login_name!!, movie.title!!)
+        val exists = favouriteMovieRepository.checkMovieIsFavourite(user.login_name!!, movie.title!!)
         if (exists) {
             throw FavouriteMovieExists()
         }
-        favouriteMovieDao.addFavouriteMovie(FavouriteMovie(movie.title!!, user.login_name!!))
+        favouriteMovieRepository.addFavouriteMovie(FavouriteMovie(movie.title!!, user.login_name!!))
     }
 
     override suspend fun getFavouriteMovieByTitle(title: String): FavouriteMovie? {
-        return favouriteMovieDao.getFavouriteMovieByTitle(title)
+        return favouriteMovieRepository.getFavouriteMovieByTitle(title)
     }
 
     override suspend fun getMovieByTitle(title: String): Movie? {
@@ -34,15 +34,15 @@ class MovieRepository(private val favouriteMovieDao: FavouriteMovieDao) : IMovie
     }
 
     override suspend fun checkMovieIsFavourite(user: User, movie: Movie): Boolean {
-        return favouriteMovieDao.checkMovieIsFavourite(user.login_name!!, movie.title!!)
+        return favouriteMovieRepository.checkMovieIsFavourite(user.login_name!!, movie.title!!)
     }
 
     override fun getAllFavouriteMovies(user: User): Flow<List<FavouriteMovie>> {
-        return favouriteMovieDao.getAllFavouriteMovies(user.login_name!!)
+        return favouriteMovieRepository.getAllFavouriteMovies(user.login_name!!)
     }
 
     override fun getAllFavouriteMoviesAsMovie(user: User): Flow<List<Movie>> {
-        val favouriteMovies = favouriteMovieDao.getAllFavouriteMovies(user.login_name!!)
+        val favouriteMovies = favouriteMovieRepository.getAllFavouriteMovies(user.login_name!!)
         val favouriteMoviesAsMovie = favouriteMovies.map { list ->
             list.map { f -> movies.first { m -> m.title == f.movie_title } }
         }

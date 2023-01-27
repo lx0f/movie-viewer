@@ -11,20 +11,11 @@ class MovieApplication : Application() {
     private lateinit var userRepository: IUserRepository
     lateinit var movieRepository: IMovieRepository
     lateinit var userManager: UserManager
-    lateinit var database: MovieDatabase
     var user: User? = null
 
     override fun onCreate() {
         super.onCreate()
-        database = Room.databaseBuilder(
-            this.applicationContext,
-            MovieDatabase::class.java,
-            "moviedatabase"
-        )
-            // drop database when downgrading
-            .fallbackToDestructiveMigrationOnDowngrade()
-            .build()
-        movieRepository = MovieRepository(database.favouriteMovieDao())
+        movieRepository = MovieRepository(MovieSqliteDatabase.getInstance(applicationContext))
         userRepository = UserRepository()
         userManager = UserManager(userRepository) { u: User? -> user = u }
     }
