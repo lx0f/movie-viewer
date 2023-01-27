@@ -20,7 +20,10 @@ class MovieApplication : Application() {
             this.applicationContext,
             MovieDatabase::class.java,
             "moviedatabase"
-        ).build()
+        )
+            // drop database when downgrading
+            .fallbackToDestructiveMigrationOnDowngrade()
+            .build()
         movieRepository = MovieRepository(database.favouriteMovieDao())
         userRepository = UserRepository()
         userManager = UserManager(userRepository) { u: User? -> user = u }
