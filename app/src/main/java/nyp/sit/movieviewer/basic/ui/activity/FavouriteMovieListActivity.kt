@@ -20,7 +20,7 @@ class FavouriteMovieListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavouriteMovieListBinding.inflate(layoutInflater)
-        adapter = MovieListAdapter(this, R.layout.list_item_movie)
+        adapter = MovieListAdapter(this)
         binding.movieList.adapter = adapter
 
         val movieObserver = Observer<List<Movie>> { movies ->

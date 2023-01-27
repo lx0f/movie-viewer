@@ -28,7 +28,7 @@ class MovieListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMovieListBinding.inflate(layoutInflater)
-        adapter = MovieListAdapter(this, R.layout.list_item_movie)
+        adapter = MovieListAdapter(this)
         binding.apply {
             movieList.adapter = adapter
             movieList.setOnItemClickListener { adapterView, _, i, _ ->

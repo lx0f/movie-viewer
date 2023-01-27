@@ -11,11 +11,12 @@ import nyp.sit.movieviewer.basic.entity.Movie
 
 class MovieListAdapter(
     private val mContext: Context,
-    private val resource: Int = R.layout.list_item_movie,
 ) : ArrayAdapter<Movie>(
     mContext,
-    resource,
+    android.R.layout.simple_list_item_1,
 ) {
+    private val resource = android.R.layout.simple_list_item_1
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
         if (view == null) {
@@ -26,7 +27,7 @@ class MovieListAdapter(
         val movie = getItem(position)
 
         if (movie != null) {
-            val text = view?.findViewById<TextView>(R.id.movie_title)
+            val text = view?.findViewById<TextView>(android.R.id.text1)
             if (text != null) {
                 text.text = movie.title
             }
