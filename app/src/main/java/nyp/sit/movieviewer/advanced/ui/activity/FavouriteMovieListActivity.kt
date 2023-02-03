@@ -2,6 +2,7 @@ package nyp.sit.movieviewer.advanced.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -18,6 +19,7 @@ class FavouriteMovieListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityFavouriteMovieListBinding.inflate(layoutInflater)
         adapter = FavouriteMovieAdapter(this)
 
@@ -37,6 +39,11 @@ class FavouriteMovieListActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
     }
 
 }

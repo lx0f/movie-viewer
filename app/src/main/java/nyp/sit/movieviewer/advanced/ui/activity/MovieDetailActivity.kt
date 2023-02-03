@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -71,7 +72,12 @@ class MovieDetailActivity : AppCompatActivity() {
         val statusObserver = Observer<AddFavouriteStatus> { status: AddFavouriteStatus? ->
             when (status) {
                 AddFavouriteStatus.LOADING, null -> Log.d(TAG, "LOADING...")
-                AddFavouriteStatus.SUCCESS -> Log.d(TAG, "SUCCESS")
+                AddFavouriteStatus.SUCCESS -> {
+                    Log.d(TAG, "SUCCESS")
+                    runOnUiThread {
+                        invalidateOptionsMenu()
+                    }
+                }
                 AddFavouriteStatus.FAVOURITE_MOVIE_EXISTS -> Log.d(TAG, "FAVOURITE_MOVIE_EXITS")
             }
         }
