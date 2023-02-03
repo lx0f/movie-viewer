@@ -3,6 +3,6 @@
 
     <item android:title="Sort By Popularity" />
     <item android:title="Sort By Ratings" />
-    <item android:title="View Favourites" />
-    <item android:title="Sign Out" />
+<!--    <item android:title="View Favourites" />-->
+<!--    <item android:title="Sign Out" />-->
 </menu>

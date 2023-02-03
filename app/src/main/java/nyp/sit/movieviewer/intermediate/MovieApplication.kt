@@ -31,5 +31,6 @@ class MovieApplication : Application() {
         )
         userRepository = UserRepository()
         userManager = UserManager(userRepository) { u: User? -> user = u }
+        user = User("testuser")
     }
 }
